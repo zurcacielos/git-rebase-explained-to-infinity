@@ -27,6 +27,13 @@ git rebase origin/development
 ```bash
 git push --force-with-lease --force-if-includes
 ```
+- To save typing, we highly recommend creating a `pushsafe` alias:
+
+```bash
+git config --global alias.pushsafe "push --force-with-lease --force-if-includes"
+```
+*(Now you can simply run `git pushsafe`)*
+
 - You can also set force if includes as default with
 
 ```bash
