@@ -77,7 +77,7 @@ This diagram provides a high-level view of the process. The most complex step is
 
 ## Unified Force-Push Workflow for Linear History
 
-When working with a rebase-based workflow, you often need to rewrite history locally and then update the remote branch. The safest way to do this without accidentally overwriting a teammate's work is by using the `--force-with-lease` and `--force-if-includes` flags.
+When working with a rebase-based workflow, you often need to rewrite history locally and then update the remote branch. The safest way to do this without accidentally overwriting a teammate's work is by using the [`--force-with-lease`](#mechanics-of---force-with-lease) and [`--force-if-includes`](#mechanics-of---force-if-includes) flags.
 
 The beauty of this approach is that you **do not need to know the exact state of the remote or local tracking branches**. A single, unified workflow covers all scenarios safely.
 
