@@ -3,6 +3,9 @@
 - [Rebase Workflow Full Lifecycle](#rebase-workflow-full-lifecycle)
 - [Unified Force-Push Workflow for Linear History](#unified-force-push-workflow-for-linear-history)
 - [Rebase Workflow Mechanics and SHA Divergence](#rebase-workflow-mechanics-and-sha-divergence)
+- [What is a "Lease" in Git?](#what-is-a-lease-in-git)
+- [Mechanics of --force-with-lease](#mechanics-of---force-with-lease)
+- [Mechanics of --force-if-includes](#mechanics-of---force-if-includes)
 
 ---
 
@@ -403,6 +406,62 @@ gitGraph
 > **Tip:** for clarity we shown `git push --force-with-lease`, but in reality always do a `git push --force-with-lease --force-if-includes`. This adds an extra layer of safety in case a background process (like your IDE) performed a `git fetch` without you knowing, bringing down new commits from a teammate that are not yet included in your local history.
 
 
+
+
+---
+
+## What is a "Lease" in Git?
+
+In this context, "lease" does not mean rent.
+
+### Origin in Computer Science
+In distributed systems and network architecture, a "lease" refers to a conditional lock or a contract. It grants a client the right to mutate a shared resource, provided that specific conditions remain true at the exact moment the mutation is applied.
+
+### Application in Git
+In the command `git push --force-with-lease`, the word "lease" represents your local repository's specific expectation of the remote repository's state.
+
+**The Contract:** You are instructing Git to overwrite the remote history strictly under the condition (the lease) that the remote pointer matches your local tracking reference (e.g., `origin/feature-remote`).
+
+- **Valid Lease:** If no one else has pushed changes, the remote repository matches your local cache. The lease is valid, and Git executes the force push.
+- **Broken Lease:** If a teammate pushed new commits, the remote pointer has advanced. Your local cache is outdated, meaning your lease is broken. Git rejects the push to prevent data loss.
+
+This mechanism is a direct implementation of *optimistic concurrency control*, functioning exactly like an ETag in an HTTP API or a version token in a database record.
+
+---
+
+## Mechanics of --force-with-lease
+
+### How it works
+Standard `git push --force` blindly overwrites the remote branch with your local branch, regardless of what is currently on the server. This is highly destructive in a team environment.
+
+`--force-with-lease` adds a safety check. Before pushing, Git compares the state of the branch on the remote server against your local remote-tracking branch (e.g., `origin/feature-remote`).
+- If the remote server matches your local tracking branch, the push succeeds (your "lease" is valid).
+- If the remote server has new commits that you haven't fetched yet, the push is rejected (your "lease" is broken). This prevents you from unknowingly overwriting a teammate's work.
+
+### Workflow Scenario
+1. You and a teammate are collaborating on `feature-remote`.
+2. You rebase your local branch.
+3. Meanwhile, your teammate pushes a new commit to `feature-remote`.
+4. You attempt to push your rebased code using `git push --force-with-lease`.
+5. **Result:** Git rejects the push because the remote server has your teammate's new commit, but your machine doesn't know about it yet. Your teammate's work is protected. You must fetch and integrate their changes before trying again.
+
+---
+
+## Mechanics of --force-if-includes
+
+### How it works
+While `--force-with-lease` is safe, it has one major vulnerability: **background fetching**. If an IDE or script runs `git fetch` in the background, your local `origin/feature-remote` gets updated with your teammate's new commits. 
+
+If this happens, the lease check passes (because your tracking branch now matches the server). Git will proceed with the overwrite, destroying your teammate's commits because you haven't actually integrated them into your working code.
+
+`--force-if-includes` closes this loophole by adding a second safety check: it verifies that the commit at the tip of the remote-tracking branch is actually *included* in the history of your local working branch.
+
+### Workflow Scenario
+1. You rebase your local branch.
+2. Your teammate pushes a new commit to `feature-remote`.
+3. Your IDE runs `git fetch` in the background. Your local tracking branch is updated, but you haven't merged or rebased those new changes into your local code.
+4. You attempt to push using `git push --force-with-lease --force-if-includes`.
+5. **Result:** The lease check passes, but the includes check **fails** because your teammate's commit is not in your local history. The push is safely rejected, preventing data loss.
 
 
 ### References
