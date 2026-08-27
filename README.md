@@ -82,7 +82,8 @@ flowchart TD
     
     RebaseLocal --> Ready([Ready to push your rebased branch])
     
-    Ready --> Push1[git push --force-with-lease --force-if-includes]
+    Ready --> Push1[🚀 git push --force-with-lease --force-if-includes]
+    style Push1 stroke:#d73a49,stroke-width:4px
     
     Push1 --> Check1{Did the push succeed?}
     
@@ -116,8 +117,6 @@ flowchart TD
    - You run `git pull --rebase`. Since the commits were already fetched, it skips the download and directly rebases your work on top of them.
    - You push again successfully.
 
-> **Tip:** You can make this even easier by setting `git config --global push.useForceIfIncludes true`. Once enabled, you only need to run `git push --force-with-lease` and Git will automatically apply the `--force-if-includes` protection for you.
-
 ---
 
 ## Rebase Workflow Mechanics and SHA Divergence
@@ -142,7 +141,7 @@ git config --global advice.pushNeedsForce false
 **Example Scenario**
 1. You push a feature branch with commits `F1 (a1b2)` and `F2 (c3d4)` for code review to its corresponding remote branch `feature-remote`.
 2. The `development` branch receives new commits (`C3`) from other users.
-3. Reviewers want changes. You update your local feature-local branch by rebasing the feature-local branch onto the updated `development` branch to prevent integration conflicts later.
+3. Reviewers want changes. You update your local feature-local branch by rebasing it onto the updated `development` branch to prevent integration conflicts later.
 4. You continue working locally, adding `F3`.
 
 Your local branch `feature-local` now contains `F1' (e5f6)`, `F2' (g7h8)`, and `F3`. The remote branch `feature-remote` still contains the original `F1 (a1b2)` and `F2 (c3d4)`. When you attempt to push, Git rejects the operation because `feature-remote` cannot be updated via a simple fast-forward.
