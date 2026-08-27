@@ -1,4 +1,4 @@
-# Git Rebase Explained
+# Git Rebase Explained to Infinity
 
 - [Rebase Workflow Full Lifecycle](#rebase-workflow-full-lifecycle)
 - [Unified Force-Push Workflow for Linear History](#unified-force-push-workflow-for-linear-history)
