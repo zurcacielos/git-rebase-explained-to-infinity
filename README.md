@@ -57,21 +57,29 @@ This section outlines the complete lifecycle of a feature branch in a rebase-bas
 
 ```mermaid
 flowchart TD
-    Start((Start)) --> Checkout["`Create new branch from development
+    Start((Start)) --> Checkout["`Create new branch
+    from development
     git fetch origin
     git checkout -b feature-local
     origin/development`"]
-    Checkout --> Commit["`Make changes and commit
+    Checkout --> Commit["`Make changes
+    and commit
     git commit`"]
-    Commit --> InitialPush["`Initial push to remote
-    git push -u origin feature-local`"]
-    InitialPush --> PR["`Open Pull Request for Code Review`"]
-    PR --> Review{"`Code Review Decision`"}
+    Commit --> InitialPush["`Initial push
+    to remote
+    git push -u origin
+    feature-local`"]
+    InitialPush --> PR["`Open Pull Request
+    for Code Review`"]
+    PR --> Review{"`Code Review
+    Decision`"}
     
-    Review -- Approved --> Merge["`Merge or Rebase into development`"]
+    Review -- Approved --> Merge["`Merge or Rebase
+    into development`"]
     Merge --> End((End))
     
-    Review -- Changes Requested --> MoreCommits["`Make requested changes locally
+    Review -- Changes Requested --> MoreCommits["`Make requested
+    changes locally
     git commit`"]
     MoreCommits --> UnifiedWorkflow[["`Execute Unified Force-Push
     Workflow below`"]]
@@ -92,23 +100,30 @@ The beauty of this approach is that you **do not need to know the exact state of
 
 ```mermaid
 flowchart TD
-    Start(["`You finished your changes and commits`"]) --> RebaseLocal["`Rebase feature-local on development
+    Start(["`You finished your
+    changes and commits`"]) --> RebaseLocal["`Rebase feature-local
+    on development
     git fetch origin
-    git rebase origin/development`"]
+    git rebase
+    origin/development`"]
     
-    RebaseLocal --> Ready(["`Ready to push your rebased branch`"])
+    RebaseLocal --> Ready(["`Ready to push
+    your rebased branch`"])
     
     Ready --> Push1["`🚀 git push
     --force-with-lease
     --force-if-includes`"]
     style Push1 stroke:#d73a49,stroke-width:4px
     
-    Push1 --> Check1{"`Did the push succeed?`"}
+    Push1 --> Check1{"`Did the push
+    succeed?`"}
     
     Check1 -- Yes --> Success1(["`Success!
-    Branch pushed successfully.`"])
+    Branch pushed
+    successfully.`"])
     
-    Success1 --> AutoPR[["`GitHub automatically updates PR
+    Success1 --> AutoPR[["`GitHub automatically
+    updates PR
     CI/CD triggers
     Back to Code Review`"]]
     
