@@ -57,17 +57,22 @@ This section outlines the complete lifecycle of a feature branch in a rebase-bas
 
 ```mermaid
 flowchart TD
-    Start((Start)) --> Checkout["Create new branch from development<br>git fetch origin<br>git checkout -b feature-local origin/development"]
-    Checkout --> Commit[Make changes and commit<br>git commit]
-    Commit --> InitialPush[Initial push to remote<br>git push -u origin feature-local]
-    InitialPush --> PR[Open Pull Request for Code Review]
-    PR --> Review{Code Review Decision}
+    Start((Start)) --> Checkout["`Create new branch from development
+    git fetch origin
+    git checkout -b feature-local origin/development`"]
+    Checkout --> Commit["`Make changes and commit
+    git commit`"]
+    Commit --> InitialPush["`Initial push to remote
+    git push -u origin feature-local`"]
+    InitialPush --> PR["`Open Pull Request for Code Review`"]
+    PR --> Review{"`Code Review Decision`"}
     
-    Review -- Approved --> Merge[Merge or Rebase into development]
+    Review -- Approved --> Merge["`Merge or Rebase into development`"]
     Merge --> End((End))
     
-    Review -- Changes Requested --> MoreCommits[Make requested changes locally<br>git commit]
-    MoreCommits --> UnifiedWorkflow[[Execute Unified Force-Push Workflow below]]
+    Review -- Changes Requested --> MoreCommits["`Make requested changes locally
+    git commit`"]
+    MoreCommits --> UnifiedWorkflow[["`Execute Unified Force-Push Workflow below`"]]
     UnifiedWorkflow --> PR
 ```
 
@@ -85,22 +90,29 @@ The beauty of this approach is that you **do not need to know the exact state of
 
 ```mermaid
 flowchart TD
-    Start([You finished your changes and commits]) --> RebaseLocal[Rebase feature-local on development<br>git fetch origin<br>git rebase origin/development]
+    Start(["`You finished your changes and commits`"]) --> RebaseLocal["`Rebase feature-local on development
+    git fetch origin
+    git rebase origin/development`"]
     
-    RebaseLocal --> Ready([Ready to push your rebased branch])
+    RebaseLocal --> Ready(["`Ready to push your rebased branch`"])
     
-    Ready --> Push1["🚀 git push<br>--force-with-lease<br>--force-if-includes"]
+    Ready --> Push1["`🚀 git push --force-with-lease --force-if-includes`"]
     style Push1 stroke:#d73a49,stroke-width:4px
     
-    Push1 --> Check1{Did the push succeed?}
+    Push1 --> Check1{"`Did the push succeed?`"}
     
-    Check1 -- Yes --> Success1([Success! <br>Branch pushed successfully.])
+    Check1 -- Yes --> Success1(["`Success!
+    Branch pushed successfully.`"])
     
-    Success1 --> AutoPR[[GitHub automatically updates PR<br>CI/CD triggers<br>Back to Code Review]]
+    Success1 --> AutoPR[["`GitHub automatically updates PR
+    CI/CD triggers
+    Back to Code Review`"]]
     
-    Check1 -- No, it was rejected --> Rejected[Push Rejected <br>feature-remote has new commits from a teammate]
+    Check1 -- No, it was rejected --> Rejected["`Push Rejected
+    feature-remote has new commits from a teammate`"]
     
-    Rejected --> PullRebase[git pull --rebase <br>Fetches and rebases your work on top of theirs]
+    Rejected --> PullRebase["`git pull --rebase
+    Fetches and rebases your work on top of theirs`"]
     
     PullRebase -->|Try pushing again| Push1
 ```
