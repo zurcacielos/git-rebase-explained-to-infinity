@@ -400,6 +400,11 @@ gitGraph
     commit id: "F1 (New Work)"
 ```
 
+> **Tip:** for clarity we shown `git push --force-with-lease`, but in reality always do a `git push --force-with-lease --force-if-includes`. This adds an extra layer of safety in case a background process (like your IDE) performed a `git fetch` without you knowing, bringing down new commits from a teammate that are not yet included in your local history.
+
+
+
+
 ### References
 * [Git Push Documentation](https://git-scm.com/docs/git-push)
 * [Mermaid gitGraph Documentation](https://mermaid.js.org/syntax/gitgraph.html)
