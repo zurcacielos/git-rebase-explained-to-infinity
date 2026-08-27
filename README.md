@@ -59,7 +59,8 @@ This section outlines the complete lifecycle of a feature branch in a rebase-bas
 flowchart TD
     Start((Start)) --> Checkout["`Create new branch from development
     git fetch origin
-    git checkout -b feature-local origin/development`"]
+    git checkout -b feature-local
+    origin/development`"]
     Checkout --> Commit["`Make changes and commit
     git commit`"]
     Commit --> InitialPush["`Initial push to remote
@@ -72,7 +73,8 @@ flowchart TD
     
     Review -- Changes Requested --> MoreCommits["`Make requested changes locally
     git commit`"]
-    MoreCommits --> UnifiedWorkflow[["`Execute Unified Force-Push Workflow below`"]]
+    MoreCommits --> UnifiedWorkflow[["`Execute Unified Force-Push
+    Workflow below`"]]
     UnifiedWorkflow --> PR
 ```
 
@@ -111,10 +113,12 @@ flowchart TD
     Back to Code Review`"]]
     
     Check1 -- No, it was rejected --> Rejected["`Push Rejected
-    feature-remote has new commits from a teammate`"]
+    feature-remote has new commits
+    from a teammate`"]
     
     Rejected --> PullRebase["`git pull --rebase
-    Fetches and rebases your work on top of theirs`"]
+    Fetches and rebases your work
+    on top of theirs`"]
     
     PullRebase -->|Try pushing again| Push1
 ```
