@@ -90,7 +90,7 @@ flowchart TD
     
     Check1 -- Yes --> Success1([Success! <br>Branch pushed successfully.])
     
-    Check1 -- No, it was rejected --> Rejected[Push Rejected <br>Remote /feature-remote - has new commits from a teammate]
+    Check1 -- No, it was rejected --> Rejected[Push Rejected <br>feature-remote has new commits from a teammate]
     
     Rejected --> PullRebase[git pull --rebase <br>Fetches and rebases your work on top of theirs]
     
