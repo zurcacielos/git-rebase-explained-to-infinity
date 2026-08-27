@@ -60,10 +60,8 @@ flowchart TD
     Merge --> End((End))
     
     Review -- Changes Requested --> MoreCommits[Make requested changes locally<br>git commit]
-    MoreCommits --> Fetch[Fetch latest development updates<br>git fetch origin]
-    Fetch --> Rebase[Rebase local feature branch<br>git rebase origin/development]
-    Rebase --> ForcePush[[Update PR with Force Push<br>See Unified Force-Push section below]]
-    ForcePush --> PR
+    MoreCommits --> UnifiedWorkflow[[Execute Unified Force-Push Workflow below]]
+    UnifiedWorkflow --> PR
 ```
 
 This diagram provides a high-level view of the process. The most complex step is updating the Pull Request after a rebase (the **Update PR with Force Push** step), because your local history has diverged from the remote history. 
@@ -89,6 +87,8 @@ flowchart TD
     Push1 --> Check1{Did the push succeed?}
     
     Check1 -- Yes --> Success1([Success! <br>Branch pushed successfully.])
+    
+    Success1 --> AutoPR[[GitHub automatically updates PR<br>CI/CD triggers<br>Back to Code Review]]
     
     Check1 -- No, it was rejected --> Rejected[Push Rejected <br>feature-remote has new commits from a teammate]
     
