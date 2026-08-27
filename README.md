@@ -80,7 +80,11 @@ The beauty of this approach is that you **do not need to know the exact state of
 
 ```mermaid
 flowchart TD
-    Start([Ready to push your rebased branch]) --> Push1[git push --force-with-lease --force-if-includes]
+    Start([You finished your changes and commits]) --> RebaseLocal[Rebase feature-local on development<br>git fetch origin<br>git rebase origin/development]
+    
+    RebaseLocal --> Ready([Ready to push your rebased branch])
+    
+    Ready --> Push1[git push --force-with-lease --force-if-includes]
     
     Push1 --> Check1{Did the push succeed?}
     
