@@ -118,7 +118,7 @@ flowchart TD
 
 ## Rebase Workflow Mechanics and SHA Divergence
 
-Git gives advice that is not ok for a rebase workflow. This document explains the wrong advice and the correct action to take.
+Git gives advice that is not ok for a rebase workflow. Here we will explain the wrong advice and the correct action to take.
 
 You can modify these variables to prevent that bad advise when working with Rebase workflow for linear history.
 
