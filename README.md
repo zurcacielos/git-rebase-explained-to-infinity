@@ -6,6 +6,39 @@
 
 ---
 
+## Too Long To Read?
+
+- to have a clean and linear history - use the rebase workflow, avoid merge commits.
+- A standard git pull must be avoided in a strict rebase workflow because it does a git fetch and then a git merge. Avoid it, use it with `git pull --rebase`or set it to always use rebase: 
+```bash
+git config --global pull.rebase true
+```
+- You can rebase your local feature branch to development with
+
+```bash
+git fetch origin
+git rebase origin/development
+```
+- You will likely need to force push to update your PR after a rebase. Always use
+
+```bash
+git push --force-with-lease --force-if-includes
+```
+- You can also set force if includes as default with
+
+```bash
+git config --global push.useForceIfIncludes true
+```
+
+- To prevent git from giving you advice that is not useful in a rebase workflow:
+```bash
+git config --global advice.pushNonFFCurrent false
+git config --global advice.pushNonFFMatching false
+git config --global advice.pushFetchFirst false
+git config --global advice.pushRefNeedsUpdate false
+git config --global advice.pushNeedsForce false
+```
+
 ## Rebase Workflow Full Lifecycle
 
 This section outlines the complete lifecycle of a feature branch in a rebase-based workflow, from creation to merging. 
