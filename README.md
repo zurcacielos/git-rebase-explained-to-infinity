@@ -151,7 +151,8 @@ Following Git's default advice in this state breaks the linear history required 
 ***
 
 ### Case 1: `advice.pushNonFFCurrent` & `advice.pushNonFFMatching`
-**When git gives this advice?:** Pushing a rebased local branch to its corresponding remote branch (or a another remote branch) that contains the "same" pre-rebase commits.
+**When git gives this advice?** Pushing a rebased local branch to its corresponding remote branch that contains the "same" pre-rebase commits.
+
 **Default git advice:** Run `git pull` to integrate changes.
 
 **Before Following Bad git Advice**
@@ -210,17 +211,20 @@ gitGraph
     commit id: "C2"
     checkout development
     commit id: "C3"
-    branch synchronized-feature
-    checkout synchronized-feature
+    branch feature-synchronized
+    checkout feature-synchronized
     commit id: "F1' (e5f6)"
     commit id: "F2' (g7h8)"
     commit id: "F3"
 ```
 
+> **Note:** The branch name `feature-synchronized` in these diagrams represents that both `feature-local` and `feature-remote` are now identical and point to the exact same history.
+
 ***
 
 ### Case 2: `advice.pushFetchFirst` & `advice.pushRefNeedsUpdate`
-**When git gives this advice?:** A teammate pushes new commits to the remote feature branch while you are working locally on the same branch.
+**When git gives this advice?** A teammate pushes new commits to the remote feature branch while you are working locally on the same branch.
+
 **Default git advice:** Run `git pull` to fetch and merge the remote changes.
 
 **Before Following Bad git Advice**
@@ -281,7 +285,7 @@ gitGraph
 ***
 
 ### Case 3: `advice.pushNeedsForce`
-**When git gives this advice?:** Pushing a rebased branch requires a force push, but the remote branch has new commits from a teammate.
+**When git gives this advice?** Pushing a rebased branch requires a force push, but the remote branch has new commits from a teammate.
 **Default git advice:** Run `git push --force`.
 
 **Before Following Bad git Advice**
@@ -349,7 +353,7 @@ gitGraph
 ***
 
 ### Case 4: `advice.pushAlreadyExists`
-**When git gives this advice?:** You create and attempt to push a new local branch, but a branch with the exact same name already exists on the remote with entirely unrelated history.
+**When git gives this advice?** You create and attempt to push a new local branch, but a branch with the exact same name already exists on the remote with entirely unrelated history.
 **Default git advice:** Run `git pull` to fetch and integrate.
 
 **Before Following Bad git Advice**
