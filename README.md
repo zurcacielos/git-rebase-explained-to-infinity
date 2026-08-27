@@ -96,7 +96,9 @@ flowchart TD
     
     RebaseLocal --> Ready(["`Ready to push your rebased branch`"])
     
-    Ready --> Push1["`🚀 git push --force-with-lease --force-if-includes`"]
+    Ready --> Push1["`🚀 git push
+    --force-with-lease
+    --force-if-includes`"]
     style Push1 stroke:#d73a49,stroke-width:4px
     
     Push1 --> Check1{"`Did the push succeed?`"}
