@@ -26,11 +26,8 @@ flowchart TD
     Review -- Changes Requested --> MoreCommits[Make requested changes locally<br>git commit]
     MoreCommits --> Fetch[Fetch latest development updates<br>git fetch origin]
     Fetch --> Rebase[Rebase local feature branch<br>git rebase origin/development]
-    Rebase --> ForcePush[[Update PR with Force Push<br>🔗 Click here for detailed workflow]]
+    Rebase --> ForcePush[[Update PR with Force Push<br>See Unified Force-Push section below]]
     ForcePush --> PR
-    
-    click ForcePush "#unified-force-push-workflow-for-linear-history" "View detailed force-push workflow"
-    style ForcePush stroke:#0969da,stroke-width:2px,color:#0969da
 ```
 
 This diagram provides a high-level view of the process. The most complex step is updating the Pull Request after a rebase (the **Update PR with Force Push** step), because your local history has diverged from the remote history. 
@@ -67,7 +64,7 @@ flowchart TD
    - Git verifies that the remote matches your knowledge of it.
    - **Result:** Success. Your new rebased commits are pushed, and the old pre-rebase commits on the remote become orphaned and are replaced.
 
-2. **Case 2: A teammate pushed new commits (Only on feature-remote)**
+2. **Case 2: A teammate pushed new commits to your shared feature branch, feature-remote**
    - You run the initial push.
    - It **fails** because `--force-with-lease` detects that the remote branch has moved forward unexpectedly.
    - You run `git pull --rebase` to fetch their commits and replay your work on top.
