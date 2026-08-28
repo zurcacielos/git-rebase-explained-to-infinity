@@ -157,7 +157,8 @@ flowchart TD
     feature-remote has new commits
     from a teammate`"]
     
-    Rejected --> PullRebase["`git pull --rebase
+    Rejected --> PullRebase["`git freshrebase
+    (or git fetch & git rebase)
     Fetches and rebases your work
     on top of theirs`"]
     
