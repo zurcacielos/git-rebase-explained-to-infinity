@@ -1,5 +1,7 @@
 # Git Rebase Explained to Infinity
 
+> *"If you think you understand the rebase workflow, you don't understand the rebase workflow."*
+
 - [Too Long To Read?](#too-long-to-read)
 - [Rebase Workflow Full Lifecycle](#rebase-workflow-full-lifecycle)
 - [Unified Force-Push Workflow for Linear History](#unified-force-push-workflow-for-linear-history)
