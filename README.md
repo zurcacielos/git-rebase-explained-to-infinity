@@ -486,17 +486,16 @@ gitGraph
 
 ## What is a "Lease" in Git?
 
-In standard English, a "lease" is a contract granting temporary use of property (like renting). However, its etymological root comes from Latin *laxare* (to let, allow, or grant permission). 
-
-In Git, "lease" uses this root meaning: you are asking the server to **grant permission** to overwrite the branch, but only under a strict condition.
+### Etymology
+In standard English, a "lease" is a contract granting temporary use of property (like renting). However, its etymological root comes from Latin *laxare* (to let, allow, or grant permission).
 
 ### Origin in Computer Science
 In distributed systems and network architecture, a "lease" refers to a conditional lock or a contract. It grants a client the right to mutate a shared resource, provided that specific conditions remain true at the exact moment the mutation is applied.
 
 ### Application in Git
-In the command `git push --force-with-lease`, the word "lease" represents your local repository's specific expectation of the remote repository's state.
+In the command `git push --force-with-lease`, Git relies directly on both the Latin root (granting permission) and the CS concept (conditional lock). 
 
-**The Contract:** You are instructing Git to overwrite the remote history strictly under the condition (the lease) that the remote pointer matches your local tracking reference (e.g., `origin/feature-remote`).
+**The Contract:** You ask the server to **grant permission** to overwrite the remote history strictly under one condition: the remote pointer must perfectly match your local tracking reference (e.g., `origin/feature-remote`).
 
 - **Valid Lease:** If no one else has pushed changes, the remote repository matches your local cache. The lease is valid, and Git executes the force push.
 - **Broken Lease:** If a teammate pushed new commits, the remote pointer has advanced. Your local cache is outdated, meaning your lease is broken. Git rejects the push to prevent data loss.
