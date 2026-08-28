@@ -1,5 +1,6 @@
 # Git Rebase Explained to Infinity
 
+- [Too Long To Read?](#too-long-to-read)
 - [Rebase Workflow Full Lifecycle](#rebase-workflow-full-lifecycle)
 - [Unified Force-Push Workflow for Linear History](#unified-force-push-workflow-for-linear-history)
 - [Rebase Workflow Mechanics and SHA Divergence](#rebase-workflow-mechanics-and-sha-divergence)
