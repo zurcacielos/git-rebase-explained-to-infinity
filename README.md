@@ -64,7 +64,7 @@ git push --force-with-lease --force-if-includes
 ```bash
 git config --global alias.pushsafe "push --force-with-lease --force-if-includes"
 ```
-*Now you rebase with `git freshrebase` and after your work is done you push with `git pushsafe`*
+*Now you rebase with `git freshrebase` and after your work is done you push with `git pushsafe`*. git pushsafe will only give error if there are unknown changes on remote.  
 
 - set --force-if-includes as default
 
