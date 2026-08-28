@@ -123,14 +123,18 @@ flowchart TD
     Start(["`You finished your
     changes and commits`"]) --> RebaseLocal["`Rebase feature-local
     on development
-    git fetch origin
+    git freshrebase
+    or
+    git fetch
     git rebase
-    origin/development`"]
+    `"]
     
     RebaseLocal --> Ready(["`Ready to push
     your rebased branch`"])
     
-    Ready --> Push1["`🚀 git push
+    Ready --> Push1["`🚀 git pushsafe
+    or
+    git push
     --force-with-lease
     --force-if-includes`"]
     style Push1 stroke:#d73a49,stroke-width:4px
@@ -168,13 +172,13 @@ flowchart TD
 - **Case 2: A teammate pushed new commits to your shared feature branch, feature-remote**
    - You run the initial push.
    - It **fails** because `--force-with-lease` detects that the remote branch has moved forward unexpectedly.
-   - You run `git pull --rebase` to fetch their commits and replay your work on top.
+   - You run `git freshrebase` or `git fetch` then `git rebase` to fetch their commits and replay your work on top.
    - You push again successfully.
 
 - **Case 3: A teammate pushed new commits AND a background fetch happened**
    - You run the initial push.
    - It **fails** because `--force-if-includes` detects that while your machine knows about the new commits, you haven't integrated them into your local history yet.
-   - You run `git pull --rebase`. Since the commits were already fetched, it skips the download and directly rebases your work on top of them.
+   - You run `git freshrebase` or `git fetch` then `git rebase`. Since the commits were already fetched, it skips the download and directly rebases your work on top of them.
    - You push again successfully.
 
 ---
@@ -195,7 +199,7 @@ git config --global advice.pushNeedsForce false
 
 ### Rebase basics:
 - Rebase works always on the local branch
-- Rebase means also resha (creates new commits with different SHA)
+- Rebase means also reSHA (creates new commits with different SHA)
 - When a branch is rebased, the base commit changes. Because a Git commit's SHA-1 hash is mathematically calculated using its parent commit, changing the parent generates an entirely new SHA for the commit, even if the code changes are identical.
 
 **Example Scenario**
@@ -327,7 +331,7 @@ gitGraph
     merge feature-remote id: "M1: Merge commit"
 ```
 
-**Correct Action (`git pull --rebase`)**
+**Correct Action (`git freshrebase` or `git fetch` then `git rebase`)**
 Fetches your teammate's `F3` commit and replays your `F4` commit on top of it, maintaining a linear history.
 
 ```mermaid
@@ -393,7 +397,7 @@ gitGraph
     commit id: "F2' (g7h8)"
 ```
 
-**Correct Action (`git push --force-with-lease`)**
+**Correct Action (`git pushsafe` or `git push --force-with-lease --force-if-includes`)**
 The push is safely rejected because the remote has unexpected new commits. You then fetch and rebase to include the teammate's work.
 
 ```mermaid
