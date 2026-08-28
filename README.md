@@ -6,6 +6,7 @@
 - [What is a "Lease" in Git?](#what-is-a-lease-in-git)
 - [Mechanics of --force-with-lease](#mechanics-of---force-with-lease)
 - [Mechanics of --force-if-includes](#mechanics-of---force-if-includes)
+- [Enemies of Rebase: Merges, IDEs & Misconfigured Repositories](#enemies-of-rebase-merges-ides--misconfigured-repositories)
 
 ---
 
@@ -537,6 +538,27 @@ If this happens, the lease check passes (because your tracking branch now matche
 3. Your IDE runs `git fetch` in the background. Your local tracking branch is updated, but you haven't merged or rebased those new changes into your local code.
 4. You attempt to push using `git push --force-with-lease --force-if-includes`.
 5. **Result:** The lease check passes, but the includes check **fails** because your teammate's commit is not in your local history. The push is safely rejected, preventing data loss.
+
+
+---
+
+## Enemies of Rebase: Merges, IDEs & Misconfigured Repositories
+
+A strict rebase workflow relies on a linear commit history. These are the most common ways it gets destroyed:
+
+### Accidental Merges
+- **Default `git pull`:** Running `git pull` creates an automatic merge commit. Avoid `git pull` entirely. Always use your `freshrebase` alias (`git fetch && git rebase`).
+- **The UI Green Button:** GitHub/GitLab "Merge Pull Request" buttons default to a merge commit. Repository admins MUST disable merge commits and enforce "Squash and merge" or "Rebase and merge" in repository settings.
+- **Syncing Forks via UI:** Clicking "Sync fork" in web interfaces might generate a merge commit. Fetch upstream and rebase locally instead.
+
+### Intentional Merges
+- **Catching up long-lived branches:** Running `git merge main` to sync a feature branch creates a redundant loop. Always use `git rebase main`.
+- **Fear of conflicts:** Rebasing applies commits sequentially, sometimes forcing you to resolve the exact same conflict multiple times. Overwhelmed developers might abort and run `git merge` to resolve everything at once. *(Tip: Look into `git rerere` - Reuse recorded resolution, to auto-resolve repeated conflicts).*
+
+### The Consequences
+- **Spaghetti History:** Git graph becomes unreadable, rendering debugging tools (`git bisect`) useless.
+- **Duplicate Commits:** Rebasing a branch that already contains a merge commit reapplies all commits, duplicating SHAs and causing severe conflicts.
+- **Nightmare Reverts:** Reverting a merge commit requires explicitly specifying the mainline parent (`git revert -m 1`). It is error-prone and blocks future re-integration.
 
 
 ### References
