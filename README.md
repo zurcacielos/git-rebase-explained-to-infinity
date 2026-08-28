@@ -11,36 +11,9 @@
 
 ## Too Long To Read?
 
-- to have a clean and linear history - use the rebase workflow, avoid merge commits.
-- A standard git pull must be avoided in a strict rebase workflow because it does a git fetch and then a git merge. Avoid it, use it with `git pull --rebase`or set it to always use rebase: 
-```bash
-git config --global pull.rebase true
-```
-- You can rebase your local feature branch to development with
+- Git rebase workflow keeps the history linear. Do not user merge.
 
-```bash
-git fetch origin
-git rebase origin/development
-```
-- You will likely need to force push to update your PR after a rebase. Always use
-
-```bash
-git push --force-with-lease --force-if-includes
-```
-- To save typing, we highly recommend creating a `pushsafe` alias:
-
-```bash
-git config --global alias.pushsafe "push --force-with-lease --force-if-includes"
-```
-*(Now you can simply run `git pushsafe`)*
-
-- You can also set force if includes as default with
-
-```bash
-git config --global push.useForceIfIncludes true
-```
-
-- To prevent git from giving you advice that is not useful in a rebase workflow:
+- Set this variables to prevent git bad advise on a rebase workflow:
 ```bash
 git config --global advice.pushNonFFCurrent false
 git config --global advice.pushNonFFMatching false
@@ -48,6 +21,53 @@ git config --global advice.pushFetchFirst false
 git config --global advice.pushRefNeedsUpdate false
 git config --global advice.pushNeedsForce false
 ```
+**Why?** Because git default messages are made for a generic workflow, not for a strict rebase. They recommend you to use `git pull` which will create a merge in default behavior, and `--force` which may destruct other people's work, never to be used in rebase workflow. They give these messages:
+
+```bash
+advice.pushNonFFCurrent   # "use 'git pull' before pushing again." Current branch is behind remote.
+
+advice.pushNonFFMatching  # "use 'git pull' before pushing again." Another pushed branch is behind remote.
+
+advice.pushFetchFirst     # "use 'git pull' before pushing again." Remote has work not present locally.
+
+advice.pushRefNeedsUpdate # "use 'git pull' before pushing again." Remote-tracking branch changed since checkout.
+
+advice.pushNeedsForce     # "without using the '--force' option." Ref involves a non-commit object.
+```
+
+- Avoid standard `git pull` because it does a `git fetch` and then a `git merge`. If you know what you do, use `git pull --rebase` or set it to always use rebase: 
+```bash
+git config --global pull.rebase true
+```
+- rebase your local feature branch to development with
+
+```bash
+git fetch origin
+git rebase
+```
+
+- create alias `freshrebase` or fetchrebase:
+```bash
+git config --global alias.freshrebase '!git fetch && git rebase'
+```
+- You will likely need to force push to update your PR after a rebase. Use
+
+```bash
+git push --force-with-lease --force-if-includes
+```
+- create alias `pushsafe`:
+
+```bash
+git config --global alias.pushsafe "push --force-with-lease --force-if-includes"
+```
+*Now you rebase with `git freshrebase` and after your work is done you push with `git pushsafe`*
+
+- set --force-if-includes as default
+
+```bash
+git config --global push.useForceIfIncludes true
+```
+
 
 ## Rebase Workflow Full Lifecycle
 
@@ -86,13 +106,13 @@ flowchart TD
     UnifiedWorkflow --> PR
 ```
 
-This diagram provides a high-level view of the process. The most complex step is updating the Pull Request after a rebase (the **Update PR with Force Push** step), because your local history has diverged from the remote history. 
+This diagram provides a high-level view of the process. See next section for the critical part. 
 
 ---
 
 ## Unified Force-Push Workflow for Linear History
 
-When working with a rebase-based workflow, you often need to rewrite history locally and then update the remote branch. The safest way to do this without accidentally overwriting a teammate's work is by using the [`--force-with-lease`](#mechanics-of---force-with-lease) and [`--force-if-includes`](#mechanics-of---force-if-includes) flags.
+Git rebase workflow rewrites history locally and then updates the remote branch. The safest way is by using the [`--force-with-lease`](#mechanics-of---force-with-lease) and [`--force-if-includes`](#mechanics-of---force-if-includes) flags.
 
 The beauty of this approach is that you **do not need to know the exact state of the remote or local tracking branches**. A single, unified workflow covers all scenarios safely.
 
