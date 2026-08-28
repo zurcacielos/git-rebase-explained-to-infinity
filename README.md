@@ -460,7 +460,15 @@ gitGraph
     merge feature-remote id: "M1: Unrelated Merge"
 ```
 
-**Correct Action (`git push --force` or rename local branch)**
+**Correct Action:**
+```bash
+git push origin --delete feature-branch
+git push origin feature-branch
+```
+Or rename local branch.
+
+Do NOT use `git push --force`. It's gonna work, but it's better to forbid --force option globally for your team. So nobody develops the muscular memory of using --force in any case. Also, writing --delete is an explicit intention.
+
 If you are certain the old remote branch is obsolete, overwrite it. Alternatively, rename your local branch.
 
 ```mermaid
@@ -474,16 +482,13 @@ gitGraph
     commit id: "F1 (New Work)"
 ```
 
-> **Tip:** for clarity we shown `git push --force-with-lease`, but in reality always do a `git push --force-with-lease --force-if-includes`. This adds an extra layer of safety in case a background process (like your IDE) performed a `git fetch` without you knowing, bringing down new commits from a teammate that are not yet included in your local history.
-
-
-
-
 ---
 
 ## What is a "Lease" in Git?
 
-In this context, "lease" does not mean rent.
+In standard English, a "lease" is a contract granting temporary use of property (like renting). However, its etymological root comes from Latin *laxare* (to let, allow, or grant permission). 
+
+In Git, "lease" uses this root meaning: you are asking the server to **grant permission** to overwrite the branch, but only under a strict condition.
 
 ### Origin in Computer Science
 In distributed systems and network architecture, a "lease" refers to a conditional lock or a contract. It grants a client the right to mutate a shared resource, provided that specific conditions remain true at the exact moment the mutation is applied.
